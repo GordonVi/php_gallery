@@ -171,7 +171,7 @@ $image_p = imagecreatetruecolor($width, $height);
 $image = imagecreatefromjpeg($filename);
 imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
 
-// Rotate
+// Rotate (https://stackoverflow.com/questions/54029909/gd-library-upload-image-rotation)
 
 if (function_exists('exif_read_data')) {
 	$exif = @exif_read_data($filename);
@@ -400,11 +400,51 @@ if ($showgallerytitle) {
 	   
    }
    
+// ----- mp4 list
+
+
+$tablerow=0;
+
+
+ if ($handle = opendir('.')) {
+   while (false !== ($file = readdir($handle))) {
+
+
+//      if (isset($remotedir)) {$filed=$remotedir."/".$file;
+//                              $filet=$remotedir."/thumb/".$file;
+//                                } else {
+                              $filed = str_replace(" ", "%20", $file);
+                              $filet="thumb/".$filed;
+//                             }
+
+
+       if (substr_count(strtolower($file), '.mp4') == 1) {
+
+
+
+           echo '<a href="'.$filed.'">'.$filed.'</a><br>';
+
+
+       $tablerow++;
+       if ($tablerow<$thumbcount) {
+          echo "\r\n";
+          }
+
+       }
+
+   }
+
+   closedir($handle);
+
+ }
+
+// ----- mp4 list end
+
 
   }
 
 
-  echo '<table><tr>'."\r\n\r\n".'<script language="JavaScript1.2">';
+  echo '<br><br><table><tr>'."\r\n\r\n".'<script language="JavaScript1.2">';
   echo "\r\n";
   echo 'var GalleryWidth = "'.$gallerywidth.'"; ';
   echo "\r\n\r\n";
